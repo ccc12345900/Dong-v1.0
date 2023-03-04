@@ -114,6 +114,8 @@
                                         <li><a href="/employee/mybids">我的竞标</a></li>
                                     </ul>
                                 </li>
+                                <li><a href="/employee/jobWant/post"><i class="icon-material-outline-assignment"></i> 发布求职</a></li>
+                                <li><a href="/complaints/post"><i class="icon-material-outline-assignment"></i> 提出投诉</a></li>
                                 <li><a href="#"><i class="icon-material-outline-settings"></i> 个人设置</a>
                                     <ul>
                                         <li><a href="/employee/settings/base">基本信息</a></li>
@@ -121,6 +123,7 @@
                                     </ul>
                                 </li>
                                 <li><a target="_blank" th:href="@{'/employee/profile?employeeId=' + ${session.employee.id}}"><i class="icon-material-outline-home"></i> 我的主页</a></li>
+                                <li><a th:href="@{'/websocket/雇员' + ${session.employee.username}}"><i class="icon-material-outline-speaker-notes"></i> 私聊</a></li>
                                 <li><a href="/employee/logout"><i class="icon-material-outline-power-settings-new"></i> 退出登录</a></li>
                             </ul>
 
@@ -205,8 +208,8 @@
                 <!-- Footer -->
                 <div class="dashboard-footer-spacer"></div>
                 <div class="small-footer margin-top-15">
-                    <div class="small-footer-copyrights">
-                        @ 2019 <strong>yuu</strong>. All Rights Reserved.
+                    <div class="col-xl-12">
+                        © 2023 <strong>Dong Yang Ming</strong>. All Rights Reserved.
                     </div>
                 </div>
                 <!-- Footer / End -->

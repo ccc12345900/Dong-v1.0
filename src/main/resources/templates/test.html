@@ -1,0 +1,301 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <title>Hireo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+  <script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+  <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/colors/blue.css">
+
+</head>
+<body class="gray">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+  <!-- Header Container
+  ================================================== -->
+  <header id="header-container" class="fullwidth dashboard-header not-sticky">
+
+    <!-- Header -->
+    <div id="header">
+      <div class="container">
+
+        <!-- Left Side Content -->
+        <div class="left-side">
+
+          <!-- Logo -->
+          <div id="logo">
+            <a href="/index"><img src="/images/logo.png" alt=""></a>
+          </div>
+
+        </div>
+        <!-- Left Side Content / End -->
+
+
+        <!-- Right Side Content / End -->
+        <div class="right-side">
+
+          <!-- User Menu -->
+          <div class="header-widget">
+
+            <!-- Messages -->
+            <div class="header-notifications user-menu">
+              <div class="header-notifications-trigger">
+                <a href="#"><div class="user-avatar status-online"><img th:src="${session.employee.headImg}" alt=""></div></a>
+              </div>
+
+              <!-- Dropdown -->
+              <div class="header-notifications-dropdown">
+
+                <!-- User Status -->
+                <div class="user-status">
+
+                  <!-- User Name / Avatar -->
+                  <div class="user-details">
+                    <div class="user-avatar status-online"><img th:src="${session.employee.headImg}" alt=""></div>
+                    <div class="user-name">
+                      [[${session.employee.username}]] <span>[[${session.employee.tagline}]]</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <ul class="user-menu-small-nav">
+                  <li><a href="/employee/dashboard"><i class="icon-material-outline-dashboard"></i>个人中心</a></li>
+                  <li><a href="/employee/settings/base"><i class="icon-material-outline-settings"></i> 设置</a></li>
+                  <li><a href="/employee/logout"><i class="icon-material-outline-power-settings-new"></i> 退出登录</a></li>
+                </ul>
+
+              </div>
+            </div>
+
+          </div>
+          <!-- User Menu / End -->
+          </span>
+
+        </div>
+        <!-- Right Side Content / End -->
+
+      </div>
+    </div>
+    <!-- Header / End -->
+
+  </header>
+  <div class="clearfix"></div>
+  <!-- Header Container / End -->
+
+
+  <!-- Dashboard Container -->
+  <div class="dashboard-container">
+
+    <!-- Dashboard Sidebar
+    ================================================== -->
+    <div class="dashboard-sidebar">
+      <div class="dashboard-sidebar-inner" data-simplebar>
+        <div class="dashboard-nav-container">
+
+          <!-- Navigation -->
+          <div class="dashboard-nav">
+            <div class="dashboard-nav-inner">
+
+              <ul>
+                <li><a href="/employee/dashboard"><i class="icon-material-outline-dashboard"></i> 首页</a></li>
+                <li><a href="/employee/bookmarks"><i class="icon-material-outline-star-border"></i>我的收藏</a></li>
+                <li><a href="#"><i class="icon-material-outline-assignment"></i> 任务</a>
+                  <ul>
+                    <li><a href="/employee/task/completed">已完成任务</a></li>
+                    <li><a href="/employee/task/uncompleted">待完成任务</a></li>
+                    <li><a href="/employee/mybids">我的竞标</a></li>
+                  </ul>
+                </li>
+                <li><a href="/employee/jobWant/post"><i class="icon-material-outline-assignment"></i> 发布求职</a></li>
+                <li><a href="/complaints/post"><i class="icon-material-outline-assignment"></i> 提出投诉</a></li>
+                <li><a href="#"><i class="icon-material-outline-settings"></i> 个人设置</a>
+                  <ul>
+                    <li><a href="/employee/settings/base">基本信息</a></li>
+                    <li><a href="/employee/settings/password">修改密码</a></li>
+                  </ul>
+                </li>
+                <li><a target="_blank" th:href="@{'/employee/profile?employeeId=' + ${session.employee.id}}"><i class="icon-material-outline-home"></i> 我的主页</a></li>
+                <li class="active"><a th:href="@{'/websocket/雇员' + ${session.employee.username}}"><i class="icon-material-outline-speaker-notes"></i> 私聊</a></li>
+                <li><a href="/employee/logout"><i class="icon-material-outline-power-settings-new"></i> 退出登录</a></li>
+              </ul>
+
+
+            </div>
+          </div>
+          <!-- Navigation / End -->
+
+        </div>
+      </div>
+    </div>
+    <!-- Dashboard Sidebar / End -->
+
+
+    <!-- Dashboard Content
+    ================================================== -->
+    <div class="dashboard-content-container" data-simplebar>
+      <div class="dashboard-content-inner" >
+        <div style="margin: auto;text-align: center">
+          <h1>私聊</h1>
+        </div>
+        <br/>
+        <div style="margin: auto;text-align: center">
+          <div style="margin: auto;text-align: center">
+            <h5>聊天对象选择</h5>
+          </div>
+          <select id="onLineUser">
+            <option>--所有--</option>
+          </select>
+          <div style="margin: auto;text-align: center">
+            <h5>对话框</h5>
+          </div>
+          <input id="text" type="text" />
+          <button class="button ripple-effect big margin-top-30" onclick="send()">发送消息</button>
+        </div>
+        <br>
+        <div style="margin-right: 10px;text-align: right">
+          <button class="button ripple-effect big margin-top-30" onclick="closeWebSocket()">关闭连接</button>
+        </div>
+        <hr/>
+        <div id="message" style="text-align: center;"></div>
+        <input  type="text" th:value="${username}" id="username" style="display: none" />
+      </div>
+    </div>
+    <!-- Dashboard Content / End -->
+
+  </div>
+  <!-- Dashboard Container / End -->
+
+</div>
+<!-- Wrapper / End -->
+
+
+
+
+<!-- Scripts
+================================================== -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/jquery-migrate-3.0.0.min.js"></script>
+<script src="/js/mmenu.min.js"></script>
+<script src="/js/tippy.all.min.js"></script>
+<script src="/js/simplebar.min.js"></script>
+<script src="/js/bootstrap-slider.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/snackbar.js"></script>
+<script src="/js/clipboard.min.js"></script>
+<script src="/js/counterup.min.js"></script>
+<script src="/js/magnific-popup.min.js"></script>
+<script src="/js/slick.min.js"></script>
+<script src="/js/custom.js"></script>
+<script type="text/javascript">
+  var webSocket;
+  var commWebSocket;
+  if ("WebSocket" in window)
+  {
+    webSocket = new WebSocket("ws://localhost:8080/websocket/"+document.getElementById('username').value);
+
+    //连通之后的回调事件
+    webSocket.onopen = function()
+    {
+      //webSocket.send( document.getElementById('username').value+"已经上线了");
+      console.log("已经连通了websocket");
+      setMessageInnerHTML("已经连通了websocket");
+    };
+
+    //接收后台服务端的消息
+    webSocket.onmessage = function (evt)
+    {
+      var received_msg = evt.data;
+      console.log("数据已接收:" +received_msg);
+      var obj = JSON.parse(received_msg);
+      console.log("可以解析成json:"+obj.messageType);
+      //1代表上线 2代表下线 3代表在线名单 4代表普通消息
+      if(obj.messageType==1){
+        //把名称放入到selection当中供选择
+        var onlineName = obj.username;
+        var option = "<option>"+onlineName+"</option>";
+        $("#onLineUser").append(option);
+        setMessageInnerHTML(onlineName+"上线了");
+      }
+      else if(obj.messageType==2){
+        $("#onLineUser").empty();
+        var onlineName = obj.onlineUsers;
+        var offlineName = obj.username;
+        var option = "<option>"+"--所有--"+"</option>";
+        for(var i=0;i<onlineName.length;i++){
+          if(!(onlineName[i]==document.getElementById('username').value)){
+            option+="<option>"+onlineName[i]+"</option>"
+          }
+        }
+        $("#onLineUser").append(option);
+
+        setMessageInnerHTML(offlineName+"下线了");
+      }
+      else if(obj.messageType==3){
+        var onlineName = obj.onlineUsers;
+        var option = null;
+        for(var i=0;i<onlineName.length;i++){
+          if(!(onlineName[i]==document.getElementById('username').value)){
+            option+="<option>"+onlineName[i]+"</option>"
+          }
+        }
+        $("#onLineUser").append(option);
+        console.log("获取了在线的名单"+onlineName.toString());
+      }
+      else{
+        setMessageInnerHTML(obj.fromusername+"对"+obj.tousername+"说："+obj.textMessage);
+      }
+    };
+
+    //连接关闭的回调事件
+    webSocket.onclose = function()
+    {
+      console.log("连接已关闭...");
+      setMessageInnerHTML("连接已经关闭....");
+    };
+  }
+  else{
+    // 浏览器不支持 WebSocket
+    alert("您的浏览器不支持 WebSocket!");
+  }
+  //将消息显示在网页上
+  function setMessageInnerHTML(innerHTML) {
+    document.getElementById('message').innerHTML += innerHTML + '<br/>';
+  }
+
+  function closeWebSocket() {
+    //直接关闭websocket的连接
+    webSocket.close();
+  }
+
+  function send() {
+    var selectText = $("#onLineUser").find("option:selected").text();
+    if(selectText=="--所有--"){
+      selectText = "All";
+    }
+    else{
+      setMessageInnerHTML(document.getElementById('username').value+"对"+selectText+"说："+ $("#text").val());
+    }
+    var message = {
+      "message":document.getElementById('text').value,
+      "username":document.getElementById('username').value,
+      "to":selectText
+    };
+    webSocket.send(JSON.stringify(message));
+    $("#text").val("");
+
+  }
+</script>
+
+</body>
+</html>

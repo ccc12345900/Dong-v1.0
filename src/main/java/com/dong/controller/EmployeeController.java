@@ -1,17 +1,12 @@
 package com.dong.controller;
 
 
-import com.dong.domain.Employee;
-import com.dong.domain.EmployeeBookmarked;
-import com.dong.domain.Employer;
+import com.dong.domain.*;
 import com.dong.service.*;
 import com.dong.vo.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -43,6 +38,9 @@ public class EmployeeController {
 
     @Resource
     private BidService bidService;
+
+    @Resource
+    private JobWantService jobWantService;
 
     /**
      * 雇员退出登录
@@ -104,6 +102,38 @@ public class EmployeeController {
     }
 
     /**
+     * 根据id修改用户个人信息
+     */
+    @GetMapping("settings/byid")
+    public String settingsById(Long id,HttpSession session, Model model) {
+
+        // 获取 session 中的雇员信息
+        EmployeeVo employee = employeeService.getById(id);
+        session.setAttribute("employee",employee);
+        // 获取视图展示对象，主要是为了展示技能信息，因为 Employee 中只有 技能 ID 没有技能名称
+        EmployeeVo employeeVo = employeeService.getById(employee.getId());
+
+        model.addAttribute("employee", employeeVo);
+        return "employee/settings_base2";
+    }
+
+    /***
+     * 评论雇员
+     */
+    @GetMapping("comment/employee")
+    public String commentemployee(Long employeeId,HttpSession session, Model model)
+    {
+        // 获取 session 中的雇员信息
+        EmployeeVo employee = employeeService.getById(employeeId);
+        session.setAttribute("employee",employee);
+        // 获取视图展示对象，主要是为了展示技能信息，因为 Employee 中只有 技能 ID 没有技能名称
+        EmployeeVo employeeVo = employeeService.getById(employee.getId());
+
+        model.addAttribute("employee", employeeVo);
+        return "employee/settings_base3";
+    }
+
+    /**
      * 保存个人基本信息
      *
      * @param employee
@@ -117,6 +147,14 @@ public class EmployeeController {
         // 更新 session 中的个人信息
         session.setAttribute("employee", currEmployee);
         return "redirect:/employee/settings/base";
+    }
+
+    @PostMapping("settings/comment/save")
+    public String saveCommentBase(Employee employee, HttpSession session) {
+        // 更新个人信息到数据库
+        Employee currEmployee = employeeService.saveEmployeeComment(employee);
+
+        return "redirect:/employer/myTasks";
     }
 
 
@@ -348,5 +386,30 @@ public class EmployeeController {
     public String deleteBid(Long bid) {
         bidService.removeById(bid);
         return "redirect:/employee/mybids";
+    }
+
+    @GetMapping("jobWant/post")
+    public String postTask(Model model) {
+        return "employee/post_job";
+    }
+
+    /**
+     * 雇主发布一个任务
+     *
+     * @param session
+     * @return
+     */
+    @PostMapping("jobWant/post")
+    public String postTask(HttpSession session, JobWant jobWant, RedirectAttributes redirectAttributes) {
+        // 获取雇主信息
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        // 添加任务
+        jobWant.setEmployeeId(employee.getId());
+        jobWantService.postJob(jobWant);
+
+        // 提示消息
+        redirectAttributes.addFlashAttribute("msg", "求职信息成功，等待管理员审核！");
+        return "redirect:/employee/jobWant/post";
     }
 }

@@ -2,10 +2,8 @@ package com.dong.controller;
 
 import com.dong.domain.Employee;
 import com.dong.domain.Employer;
-import com.dong.service.EmployeeService;
-import com.dong.service.EmployerService;
-import com.dong.service.TaskCategoryService;
-import com.dong.service.TaskService;
+import com.dong.service.*;
+import com.dong.vo.JobWantVo;
 import com.dong.vo.TaskCategoryVo;
 import com.dong.vo.TaskVo;
 import org.springframework.stereotype.Controller;
@@ -37,6 +35,9 @@ public class IndexController {
     @Resource
     private EmployeeService employeeService;
 
+    @Resource
+    private JobWantService jobWantService;
+
     /**
      * 跳转到系统首页，使用 localhost:8080 和 localhost:8080/index 都可以访问
      *
@@ -63,6 +64,9 @@ public class IndexController {
         // 查询近期任务（查询 5 条）,根据创建时间来查询
         List<TaskVo> recentTaskVos =  taskService.getRecently();
 
+        //查询最近求职信息
+        List<JobWantVo> recentJobWantVos = jobWantService.getRecently();
+
         // 添加到 Model 域对象中，供页面展示
         model.addAttribute("taskCategories", taskCategoryVos);
         model.addAttribute("taskCount", taskCount);
@@ -70,6 +74,7 @@ public class IndexController {
         model.addAttribute("employerCount", employerCount);
         model.addAttribute("popularCategories", popularCategories);
         model.addAttribute("recentTasks", recentTaskVos);
+        model.addAttribute("recentJobWants", recentJobWantVos);
 
         return "index";
     }

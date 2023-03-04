@@ -210,5 +210,18 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return employeeMapper.selectList(null);
     }
 
+    @Override
+    public Employee saveEmployeeComment(Employee employee) {
+        Employee employee1 = employeeMapper.selectById(employee.getId());
+        employee1.setProfile(employee1.getProfile()+"\r\n"+"商户评价："+employee.getProfile());
+        System.out.println(employee1.getProfile());
+        // 更新
+        employeeMapper.updateById(employee1);
+
+        // 重新查询雇员信息
+        Employee currEmployee = employeeMapper.selectById(employee.getId());
+        return currEmployee;
+    }
+
 
 }

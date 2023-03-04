@@ -144,4 +144,10 @@ public interface TaskService extends IService<Task> {
      * @param taskId 任务 ID
      */
     void unCheckSuccess(Long taskId);
+
+    /***
+     * 修改评价
+     * @param task
+     */
+    void updateTask2(Task task);
 }

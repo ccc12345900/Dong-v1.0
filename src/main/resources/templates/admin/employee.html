@@ -113,6 +113,18 @@
                                 </div>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/admin/jobWant/check" role="button" aria-expanded="false" aria-controls="navbar-dashboards">
+                                    <i class="ni ni-credit-card"></i>
+                                    <span class="nav-link-text">求职信息管理</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" >
+                                <a class="nav-link" href="/admin/complaints/check" role="button" aria-expanded="false" aria-controls="navbar-dashboards">
+                                    <i class="ni ni-credit-card"></i>
+                                    <span class="nav-link-text">投诉信息管理</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/admin/settings/password" role="button" aria-expanded="false" aria-controls="navbar-dashboards">
                                     <i class="ni ni-credit-card"></i>
                                     <span class="nav-link-text">修改密码</span>
@@ -253,6 +265,13 @@
                                         </font>
                                     </font>
                                 </th>
+                                <th rowspan="1" colspan="1">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">
+                                            操作
+                                        </font>
+                                    </font>
+                                </th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -275,6 +294,16 @@
                                 <td>
                                     [[${#dates.format(employee.createTime, 'yyyy-MM-dd HH:mm:ss')}]]
                                 </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                            <a class="dropdown-item" th:href="@{'/employee/settings/byid?id=' + ${employee.id}}">用户信息编辑</a>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -287,7 +316,7 @@
             <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6">
                     <div class="copyright text-center text-lg-left text-muted">
-                        &copy; 2019 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">yuu</a>
+                        &copy; 2023 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Dong Yang Ming</a>
                     </div>
                 </div>
             </div>

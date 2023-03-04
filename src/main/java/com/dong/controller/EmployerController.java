@@ -199,6 +199,24 @@ public class EmployerController {
         return "redirect:/employer/myTasks";
     }
 
+    @PostMapping("task/update2")
+    public String updateTask2(Task task, RedirectAttributes redirectAttributes) {
+        taskService.updateTask2(task);
+        // 提示消息
+        redirectAttributes.addFlashAttribute("msg", "发布评价成功！");
+        return "redirect:/employee/task/completed";
+    }
+
+    @GetMapping("comment/task")
+    public String commentByid(Long taskId,Model model)
+    {
+        // 查询所有任务
+        TaskVo taskVo = taskService.getById(taskId);
+
+        model.addAttribute("task", taskVo);
+        return "employer/update_task2";
+    }
+
     /**
      * 删除任务
      *

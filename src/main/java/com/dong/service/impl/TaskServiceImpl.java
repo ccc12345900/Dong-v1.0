@@ -360,6 +360,15 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         taskMapper.updateById(task);
     }
 
+    @Override
+    public void updateTask2(Task task) {
+        QueryWrapper<Task> taskQueryWrapper = new QueryWrapper<>();
+        taskQueryWrapper.eq("task_title",task.getTaskTitle()).eq("task_profile",task.getTaskProfile());
+        Task task1 = taskMapper.selectOne(taskQueryWrapper);
+        task1.setTaskDesc(task1.getTaskDesc()+"\r\n"+"用户评价："+task.getTaskDesc()+" ");
+        taskMapper.updateById(task1);
+    }
+
     private List<TaskVo> tasksToTaskVos(List<Task> tasks) {
         List<TaskVo> taskVos = new ArrayList<>();
         for (Task task : tasks) {

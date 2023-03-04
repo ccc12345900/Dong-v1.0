@@ -94,4 +94,10 @@ public interface EmployeeService extends IService<Employee> {
      */
     List<Employee> getAll();
 
+    /***
+     * 添加用户评论
+     * @param employee
+     * @return
+     */
+    Employee saveEmployeeComment(Employee employee);
 }

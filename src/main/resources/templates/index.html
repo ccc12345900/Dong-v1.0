@@ -327,6 +327,55 @@
             </div>
         </div>
     </div>
+
+    <div class="section  margin-top-45 padding-top-65 padding-bottom-75">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+
+                    <!-- Section Headline -->
+                    <div class="section-headline margin-top-0 margin-bottom-35">
+                        <h3>近期求职</h3>
+                        <a href="/jobWant/list" class="headline-link">浏览所有求职</a>
+                    </div>
+
+                    <!-- Jobs Container -->
+                    <div class="tasks-list-container compact-list margin-top-35" th:each="jobWant : ${recentJobWants}">
+
+                        <!-- Task -->
+                        <a th:href="@{'/jobWant/page?taskId=' + ${jobWant.id}}" class="task-listing">
+
+                            <!-- Job Listing Details -->
+                            <div class="task-listing-details">
+
+                                <!-- Details -->
+                                <div class="task-listing-description">
+                                    <h3 class="task-listing-title">[[${jobWant.jobTitle}]]</h3>
+                                    <ul class="task-icons">
+                                        <li>[[${jobWant.jobDesc}]]</li>
+                                        <li><i class="icon-material-outline-access-time"></i> [[${jobWant.createTime}]]</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                            <div class="task-listing-bid">
+                                <div class="task-listing-bid-inner">
+                                    <div class="task-offers">
+                                        <strong>￥[[${jobWant.feesLow}]] - ￥[[${jobWant.feesHigh}]]</strong>
+                                    </div>
+                                    <span class="button button-sliding-icon ripple-effect">详细信息<i class="icon-material-outline-arrow-right-alt"></i></span>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+                    <!-- Jobs Container / End -->
+
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Featured Jobs / End -->
 
     <!-- Icon Boxes -->
@@ -422,7 +471,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
-                        © 2018 <strong>yuu</strong>. All Rights Reserved.
+                        © 2023 <strong>Dong Yang Ming</strong>. All Rights Reserved.
                     </div>
                 </div>
             </div>

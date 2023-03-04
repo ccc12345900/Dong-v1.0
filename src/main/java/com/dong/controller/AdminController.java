@@ -2,10 +2,10 @@ package com.dong.controller;
 
 import com.dong.domain.Admin;
 import com.dong.domain.Employee;
-import com.dong.service.AdminService;
-import com.dong.service.EmployeeService;
-import com.dong.service.EmployerService;
-import com.dong.service.TaskService;
+import com.dong.service.*;
+import com.dong.vo.ComplaintsVo;
+import com.dong.vo.EmployeeVo;
+import com.dong.vo.JobWantVo;
 import com.dong.vo.TaskVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +44,12 @@ public class AdminController {
 
     @Resource
     private TaskService taskService;
+
+    @Resource
+    private JobWantService jobWantService;
+
+    @Resource
+    private ComplaintsService complaintsService;
 
     /**
      * 跳转到登录页面
@@ -148,4 +155,46 @@ public class AdminController {
         // 重定向到登录页
         return "redirect:/admin/login";
     }
+
+    @GetMapping("jobWant/check")
+    public String taskCheck(Model model) {
+        // 查询所有待审核任务
+        List<JobWantVo> jobWantVos = jobWantService.getUnCheckAll();
+
+        // 设置到域对象中，提供给页面展示
+        model.addAttribute("jobs", jobWantVos);
+        return "admin/job";
+    }
+
+    @GetMapping("jobWant/checkSuccess")
+    public String checkSuccess(Long taskId) {
+        // 通过审核
+        jobWantService.checkSuccess(taskId);
+        return "redirect:/admin/jobWant/check";
+    }
+
+    @GetMapping("jobWant/unCheckSuccess")
+    public String unCheckSuccess(Long taskId) {
+        // 审核失败
+        jobWantService.unCheckSuccess(taskId);
+        return "redirect:/admin/jobWant/check";
+    }
+
+    @GetMapping("complaints/check")
+    public String complaintsCheck(Model model) {
+        // 查询所有待审核任务
+        List<ComplaintsVo> jobWantVos = complaintsService.getUnCheckAll();
+
+        // 设置到域对象中，提供给页面展示
+        model.addAttribute("jobs", jobWantVos);
+        return "admin/complaints";
+    }
+
+    @GetMapping("complaints/checkSuccess")
+    public String complaintsCheckSuccess(Long taskId) {
+        // 通过审核
+        complaintsService.removeById(taskId);
+        return "redirect:/admin/complaints/check";
+    }
+
 }
