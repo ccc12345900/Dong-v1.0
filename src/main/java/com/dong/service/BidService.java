@@ -46,4 +46,6 @@ public interface BidService extends IService<Bid> {
      * @param employeeId 雇员 ID
      */
     void acceptBid(Long taskId, Long employeeId);
+
+    int removeByEmployeeId(Long id);
 }

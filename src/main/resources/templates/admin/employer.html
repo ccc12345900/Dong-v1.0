@@ -74,7 +74,7 @@
                         <div class="collapse show" id="navbar-employer">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item ">
-                                    <a href="/admin/employer/" class="nav-link">雇主列表</a>
+                                    <a href="/admin/employer/" class="nav-link">学生列表</a>
                                 </li>
                             </ul>
                         </div>
@@ -245,6 +245,13 @@
                                         </font>
                                     </font>
                                 </th>
+                                <th rowspan="1" colspan="1">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">
+                                            操作
+                                        </font>
+                                    </font>
+                                </th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -260,6 +267,16 @@
                                 </td>
                                 <td>
                                     [[${#dates.format(employer.createTime, 'yyyy-MM-dd HH:mm:ss')}]]
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                            <a class="dropdown-item" th:href="@{'/employer/deletebyId?id=' + ${employer.id}}">删除雇主</a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>

@@ -326,4 +326,25 @@ public class EmployerController {
         redirectAttributes.addFlashAttribute("msg", msg);
         return "redirect:/employer/settings/password";
     }
+
+    @GetMapping("/deletebyId")
+    public String deletebyid(String id,Model model)
+    {
+        Employer byId = employerService.getById(id);
+        employerService.removeById(byId);
+        List<TaskVo> byEmployerId = taskService.getByEmployerId(byId.getId());
+        if(byEmployerId.size() > 0)
+        {
+            for(TaskVo t : byEmployerId) {
+                taskService.removeById(t.getId());
+                bidService.removeById(t.getId());
+            }
+        }
+        // 查询所有雇主
+        List<Employer> employers = employerService.getAll();
+
+        // 设置到域对象中，提供给页面展示
+        model.addAttribute("employers", employers);
+        return "admin/employer";
+    }
 }

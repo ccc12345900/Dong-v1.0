@@ -213,8 +213,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Employee saveEmployeeComment(Employee employee) {
         Employee employee1 = employeeMapper.selectById(employee.getId());
-        employee1.setProfile(employee1.getProfile()+"\r\n"+"商户评价："+employee.getProfile());
-        System.out.println(employee1.getProfile());
+        String appraise = "";
+        if(employee1.getAppraise()!=null)
+            appraise+=employee1.getAppraise();
+        employee1.setAppraise(appraise+"\r\n"+"商户评价："+employee.getAppraise());
+        System.out.println(employee1.getAppraise());
         // 更新
         employeeMapper.updateById(employee1);
 

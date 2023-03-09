@@ -91,7 +91,7 @@
                                 <div class="collapse show" id="navbar-employee">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="/admin/employee/" class="nav-link">雇员列表</a>
+                                            <a href="/admin/employee/" class="nav-link">学生列表</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -196,12 +196,11 @@
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
-                        <h6 class="h2 text-white d-inline-block mb-0">任务分类列表</h6>
+                        <h6 class="h2 text-white d-inline-block mb-0">学生管理列表</h6>
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#">任务分类管理</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">任务分类列表</li>
+                                <li class="breadcrumb-item"><a href="#">学生用户管理</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -217,7 +216,7 @@
                 <div class="card">
                     <!-- Card header -->
                     <div class="card-header">
-                        <span class="mb-0" style="font-size: 20px; font-weight: bold; text-align: center">雇员列表</span>
+                        <span class="mb-0" style="font-size: 20px; font-weight: bold; text-align: center">学生列表</span>
                     </div>
                     <div class="table-responsive py-4">
                         <table class="table table-flush dataTable" id="datatable-buttons" role="grid">
@@ -226,14 +225,14 @@
                                 <th rowspan="1" colspan="1">
                                     <font style="vertical-align: inherit;">
                                         <font style="vertical-align: inherit;">
-                                            雇员ID
+                                            学生ID
                                         </font>
                                     </font>
                                 </th>
                                 <th rowspan="1" colspan="1">
                                     <font style="vertical-align: inherit;">
                                         <font style="vertical-align: inherit;">
-                                            雇员名称
+                                            学生名称
                                         </font>
                                     </font>
                                 </th>
@@ -300,7 +299,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" th:href="@{'/employee/settings/byid?id=' + ${employee.id}}">用户信息编辑</a>
+                                            <a class="dropdown-item" th:href="@{'/employee/deletebyid?id=' + ${employee.id}}">用户删除</a>
                                         </div>
                                     </div>
                                 </td>

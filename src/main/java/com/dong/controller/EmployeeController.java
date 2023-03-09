@@ -1,6 +1,7 @@
 package com.dong.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dong.domain.*;
 import com.dong.service.*;
 import com.dong.vo.*;
@@ -411,5 +412,38 @@ public class EmployeeController {
         // 提示消息
         redirectAttributes.addFlashAttribute("msg", "求职信息成功，等待管理员审核！");
         return "redirect:/employee/jobWant/post";
+    }
+
+
+    @GetMapping("/deletebyid")
+    public String deleteById(Long id,Model model)
+    {
+        EmployeeVo byId = employeeService.getById(id);
+        employeeService.removeById(byId);
+        int num = bidService.removeByEmployeeId(byId.getId());
+        if(num != 0)
+        {
+            QueryWrapper<Task> taskQueryWrapper = new QueryWrapper<>();
+            taskQueryWrapper.eq("employee_id",id);
+            List<Task> list = taskService.list(taskQueryWrapper);
+            for(Task t:list)
+            {
+                if(t.getTaskStatus()!=3)
+                {
+                    t.setTaskStatus(0);
+                    t.setEmployeeId(null);
+                    t.setBidTime(null);
+                    t.setTaskPrice(null);
+                    t.setCloseTime(null);
+                    taskService.updateTask(t);
+                }
+            }
+        }
+        // 查询所有分类
+        List<Employee> employees = employeeService.getAll();
+
+        // 设置到域对象中，提供给页面展示
+        model.addAttribute("employees", employees);
+        return "admin/employee";
     }
 }

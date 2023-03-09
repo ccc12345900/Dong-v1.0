@@ -109,4 +109,11 @@ public class BidServiceImpl extends ServiceImpl<BidMapper, Bid> implements BidSe
         bid1.setBidStatus(BidStatus.BIT);
         bidMapper.updateById(bid1);
     }
+
+    @Override
+    public int removeByEmployeeId(Long id) {
+        QueryWrapper<Bid> bidQueryWrapper = new QueryWrapper<>();
+        bidQueryWrapper.eq("employee_id",id);
+        return bidMapper.delete(bidQueryWrapper);
+    }
 }
